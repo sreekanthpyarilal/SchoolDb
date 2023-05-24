@@ -1,7 +1,9 @@
 package com.schooldb.model;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,12 +15,14 @@ import java.util.List;
 public class School {
 
     @Id
-    @Column(name="schoolId")
+    @Column(name = "schoolId")
     private int schoolId;
     private String schoolName;
+    private String schoolCode;
+    private String stateCode;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "emps_id", referencedColumnName = "schoolId")
+    @JoinColumn(name = "fn_schoolId", referencedColumnName = "schoolId")
     private List<Employee> employees;
 
 }

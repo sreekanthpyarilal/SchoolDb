@@ -2,16 +2,15 @@ package com.schooldb.service;
 
 import com.schooldb.exception.DataAlreadyExistException;
 import com.schooldb.model.Employee;
+import com.schooldb.model.School;
 import com.schooldb.repository.EmpRepo;
 import com.schooldb.repository.SchoolRepo;
-import com.schooldb.model.School;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class SchoolImplService implements SchoolService {
@@ -24,7 +23,7 @@ public class SchoolImplService implements SchoolService {
 
     @Override
     public School saveSchoolData(School school) throws DataAlreadyExistException {
-        boolean emp_exist=false;
+        boolean emp_exist = false;
         Optional<School> optional = schoolRepo.findById((school.getSchoolId()));
         if (optional.isPresent()) {
             ArrayList<Integer> emp_ids = new ArrayList<>();
@@ -33,13 +32,13 @@ public class SchoolImplService implements SchoolService {
                 Optional<Employee> ids = empRepo.findById(id.getEmpId());
                 if (ids.isPresent()) {
                     System.out.println("emp already exist" + id.getEmpId());
-                    emp_exist=true;
+                    emp_exist = true;
                 } else {
                     return schoolRepo.save(school);
                 }
             }
         }
-        if(emp_exist){
+        if (emp_exist) {
             throw new DataAlreadyExistException("User already exist");
         }
         return schoolRepo.save(school);
@@ -50,5 +49,11 @@ public class SchoolImplService implements SchoolService {
     @Override
     public ArrayList<School> getAllSchooldata() {
         return (ArrayList<School>) schoolRepo.findAll();
+    }
+
+    @Override
+    public ArrayList<School> getbyStateCode(String stateCode) {
+
+        return schoolRepo.findByStateCode(stateCode);
     }
 }
